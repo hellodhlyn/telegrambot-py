@@ -8,6 +8,7 @@ pylint = "*"
 autopep8 = "*"
 rope = "*"
 flake8 = "*"
+coverage = "*"
 
 [packages]
 python-telegram-bot = "==11.1.*"

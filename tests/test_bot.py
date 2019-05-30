@@ -1,6 +1,5 @@
 from copy import deepcopy
 from datetime import datetime
-import os
 import unittest
 from unittest.mock import Mock
 
@@ -19,7 +18,7 @@ class TestBot(unittest.TestCase):
         _interface.get_updates = Mock(return_value=[_mock_update])
         _interface.send_message = Mock(return_value=_mock_message)
 
-        bot = Bot(os.environ['TEST_BOT_TOKEN'])
+        bot = Bot('dummy_token')
         bot._interface = _interface
 
         @bot.command('/ping')
@@ -30,6 +29,21 @@ class TestBot(unittest.TestCase):
 
     def test_command(self):
         self.assertIn('/ping', self.bot._commands.keys())
+
+    def test_poll(self):
+        self.bot._execute_command = Mock()
+
+        self.bot._poll()
+
+        self.bot._execute_command.assert_called_once_with(_mock_message)
+        self.assertEqual(self.bot._update_offset, 4)
+
+    def test_poll_exception(self):
+        self.bot._execute_command = Mock(side_effect=RuntimeError())
+
+        self.bot._poll()
+
+        self.assertEqual(self.bot._update_offset, 4)
 
     def test_execute_command(self):
         self.bot._execute_command(_mock_message)
