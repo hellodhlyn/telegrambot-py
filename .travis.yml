@@ -2,7 +2,6 @@ dist: xenial
 
 language: python
 python:
-  - "3.4"
   - "3.5"
   - "3.6"
   - "3.7"
@@ -18,5 +17,7 @@ script:
   - pipenv run test
 
 after_success:
-  - pip install codecov
-  - codecov
+  - if [[ `python -c "import platform; print(platform.python_version())"` == 3.7* ]]; then
+      pip install codecov;
+      codecov;
+    fi

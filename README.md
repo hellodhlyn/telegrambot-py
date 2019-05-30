@@ -1,4 +1,6 @@
-![Build status](https://img.shields.io/travis/hellodhlyn/telegrambot-py.svg?style=flat-square) ![Coverage](https://img.shields.io/codecov/c/gh/hellodhlyn/telegrambot-py.svg?style=flat-square) ![License](https://img.shields.io/github/license/hellodhlyn/telegrambot-py.svg?style=flat-square)
+[![Build status](https://img.shields.io/travis/hellodhlyn/telegrambot-py.svg?style=flat-square)](https://travis-ci.org/hellodhlyn/telegrambot-py)
+[![Coverage](https://img.shields.io/codecov/c/gh/hellodhlyn/telegrambot-py.svg?style=flat-square)](https://codecov.io/gh/hellodhlyn/telegrambot-py)
+[![License](https://img.shields.io/github/license/hellodhlyn/telegrambot-py.svg?style=flat-square)](https://github.com/hellodhlyn/telegrambot-py/blob/master/LICENSE)
 
 # telegrambot-py
 
@@ -25,7 +27,7 @@ bot.start()
 ## Development
 ### Prerequsites
 
-- Python 3.4 or greater
+- Python 3.5 or greater
 - [Pipenv](https://github.com/pypa/pipenv)
 
 ### Install dependencies
