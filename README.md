@@ -1,3 +1,5 @@
+![Build status](https://img.shields.io/travis/hellodhlyn/telegrambot-py.svg?style=flat-square) ![Coverage](https://img.shields.io/codecov/c/gh/hellodhlyn/telegrambot-py.svg?style=flat-square) ![License](https://img.shields.io/github/license/hellodhlyn/telegrambot-py.svg?style=flat-square)
+
 # telegrambot-py
 
 > Make your own telegram bot easily.
