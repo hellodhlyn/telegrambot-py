@@ -5,8 +5,16 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
+autopep8 = "*"
+rope = "*"
+flake8 = "*"
 
 [packages]
+python-telegram-bot = "==11.1.*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+lint = "flake8 telegrambot/ examples/ tests/"
+test = "python -m unittest discover"

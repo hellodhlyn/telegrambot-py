@@ -132,3 +132,6 @@ dmypy.json
 # Some IDE configs
 .idea
 .vscode
+
+# Sensitives
+.envrc
