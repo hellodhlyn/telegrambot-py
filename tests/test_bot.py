@@ -11,21 +11,34 @@ _mock_chat = Chat(1, 'PRIVATE')
 _mock_message = Message(2, None, datetime.now(), _mock_chat, text='/ping')
 _mock_update = Update(update_id=3, message=_mock_message)
 
+_mock_error = RuntimeError('MockError')
+
 
 class TestBot(unittest.TestCase):
     def setUp(self):
-        _interface = Mock(spec=BotInterface)
-        _interface.get_updates = Mock(return_value=[_mock_update])
-        _interface.send_message = Mock(return_value=_mock_message)
+        interface = Mock(spec=BotInterface)
+        interface.get_updates = Mock(return_value=[_mock_update])
+        interface.send_message = Mock(return_value=_mock_message)
+
+        error_handler = Mock()
 
         bot = Bot('dummy_token')
-        bot._interface = _interface
+        bot._interface = interface
 
         @bot.command('/ping')
         def ping(ctx):
             return 'pong'
 
+        @bot.command('/invalid')
+        def invalid(ctx):
+            raise _mock_error
+
+        @bot.error_handler()
+        def handle_error(e):
+            error_handler(_mock_error)
+
         self.bot = bot
+        self._error_handler = error_handler
 
     def test_command(self):
         self.assertIn('/ping', self.bot._commands.keys())
@@ -42,7 +55,6 @@ class TestBot(unittest.TestCase):
         self.bot._execute_command = Mock(side_effect=RuntimeError())
 
         self.bot._poll()
-
         self.assertEqual(self.bot._update_offset, 4)
 
     def test_execute_command(self):
@@ -57,3 +69,12 @@ class TestBot(unittest.TestCase):
             self.bot._execute_command(message)
 
         self.bot._interface.send_message.assert_not_called()
+
+    def test_error_handler(self):
+        message = deepcopy(_mock_message)
+        message.text = '/invalid'
+        update = deepcopy(_mock_update)
+        update.message = message
+
+        self.bot._handle_update(update)
+        self._error_handler.assert_called_once_with(_mock_error)

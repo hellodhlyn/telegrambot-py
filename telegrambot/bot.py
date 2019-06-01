@@ -12,6 +12,7 @@ class Bot:
 
         self._commands = {}
         self._update_offset = 0
+        self._error_handler = None
 
     def command(self, command):
         """
@@ -25,6 +26,24 @@ class Bot:
 
         def decorator(f):
             self._commands[command] = f
+            return f
+
+        return decorator
+
+    def error_handler(self):
+        """
+        A decorator to handle raised exception.
+        Usage example:
+
+            @bot.error_handler()
+            def handle_error(err):
+                print(err)
+        """
+
+        def decorator(f):
+            if self._error_handler is not None:
+                raise RuntimeError('error handler can\'t be more than one')
+            self._error_handler = f
             return f
 
         return decorator
@@ -44,13 +63,15 @@ class Bot:
         updates = self._interface.get_updates(timeout=_POLLING_TIMEOUT,
                                               offset=self._update_offset)
         for update in updates:
-            try:
-                self._execute_command(update.message)
-            except Exception:
-                # TODO - call error handler
-                pass
-
+            self._handle_update(update)
             self._update_offset = update.update_id + 1
+
+    def _handle_update(self, update):
+        try:
+            self._execute_command(update.message)
+        except Exception as e:
+            if self._error_handler is not None:
+                self._error_handler(e)
 
     def _execute_command(self, message):
         texts = message.text.split(' ')
