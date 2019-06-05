@@ -9,6 +9,9 @@ autopep8 = "*"
 rope = "*"
 flake8 = "*"
 coverage = "*"
+twine = "*"
+setuptools = "*"
+wheel = "*"
 
 [packages]
 python-telegram-bot = "==11.1.*"
@@ -19,3 +22,4 @@ python_version = "3.7"
 [scripts]
 lint = "flake8 telegrambot/ examples/ tests/"
 test = "coverage run -m unittest discover"
+package = "python setup.py bdist_wheel"

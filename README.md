@@ -42,3 +42,9 @@ pipenv install --dev
 pipenv run lint
 pipenv run test
 ```
+
+### Deployment
+
+```sh
+pipenv run package
+```
