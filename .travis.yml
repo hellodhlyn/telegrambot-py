@@ -16,16 +16,19 @@ script:
   - pipenv run lint
   - pipenv run test
 
-after_success:
-  - if [[ `python -c "import platform; print(platform.python_version())"` == 3.7* ]]; then
-      pip install codecov;
-      codecov;
-    fi
-
-deploy:
-  provider: pypi
-  user: hellodhlyn
-  password:
-    secure: "IeR8Wp+4OmG0laTKI1R3djD08pLZWkVZXnq7cP+mvQM8Sg+icJUet0vVRAOKKqAeSpyOMqhy2RHxRhMkuBv0DthB7ptyScYfHdOq/5e97TFp/zAeWWbmv2ugwMlLLR4sVOsOZgD+tDQGA7IXkFk0PuB4ZYmTzUe/I26haSE52F8P3T4P6mLcqDO/fKh6OyjNo3iYp3FZ9PN400yRDUhs+f3yJkHRX0slbogRnnIiNffuSCjj5s2iob4rHMTVYu39swGOIM713PhfadfEBo0oUOJxu4uOcGCTSJzoXW5B2j8qWnFuizDF9fZ7vqajpQZastctDmDTlRsGavz8MVK1gH3Qv5/lLveaqnNPUfb3xzH/IBIWt07LbKlEIR0OKOsnatXyeLtGGj973RxUnxwxeH7X6T+SuL7PJO2EIn0zJwCuTBRfVz/mX8zPjqpryitLt2n4C1gX8Tn4YtZ8Wm1BljnRnWoJIglIBbu3UrfZPs2AEOpqXBaDkb3Al+SjQmifCvwjOCVCWSMQ4vMp4lPAgDxfpFAPV0JJyegRLN0XmX83h/+plpF3i8/8Df2o4MwYFl3ekUSLWydCS3gBZFkmiV4t3mHse14RCFEXvX+f10hdbd9ROFqSS3sV6qS8U14bwootGQnx1ew30GZSHHOEbklYbX5NTxM20GmetimOiMo="
-  distributions: "sdist bdist_wheel"
-  skip_existing: true
+jobs:
+  include:
+    - stage: report coverage
+      python: "3.7"
+      script:
+        - pip install codecov
+        - codecov
+    - stage: deploy
+      python: "3.7"
+      deploy:
+        provider: pypi
+        user: hellodhlyn
+        password:
+          secure: "IeR8Wp+4OmG0laTKI1R3djD08pLZWkVZXnq7cP+mvQM8Sg+icJUet0vVRAOKKqAeSpyOMqhy2RHxRhMkuBv0DthB7ptyScYfHdOq/5e97TFp/zAeWWbmv2ugwMlLLR4sVOsOZgD+tDQGA7IXkFk0PuB4ZYmTzUe/I26haSE52F8P3T4P6mLcqDO/fKh6OyjNo3iYp3FZ9PN400yRDUhs+f3yJkHRX0slbogRnnIiNffuSCjj5s2iob4rHMTVYu39swGOIM713PhfadfEBo0oUOJxu4uOcGCTSJzoXW5B2j8qWnFuizDF9fZ7vqajpQZastctDmDTlRsGavz8MVK1gH3Qv5/lLveaqnNPUfb3xzH/IBIWt07LbKlEIR0OKOsnatXyeLtGGj973RxUnxwxeH7X6T+SuL7PJO2EIn0zJwCuTBRfVz/mX8zPjqpryitLt2n4C1gX8Tn4YtZ8Wm1BljnRnWoJIglIBbu3UrfZPs2AEOpqXBaDkb3Al+SjQmifCvwjOCVCWSMQ4vMp4lPAgDxfpFAPV0JJyegRLN0XmX83h/+plpF3i8/8Df2o4MwYFl3ekUSLWydCS3gBZFkmiV4t3mHse14RCFEXvX+f10hdbd9ROFqSS3sV6qS8U14bwootGQnx1ew30GZSHHOEbklYbX5NTxM20GmetimOiMo="
+        distributions: "sdist bdist_wheel"
+        skip_existing: true
