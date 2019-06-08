@@ -1,5 +1,7 @@
 [![Build status](https://img.shields.io/travis/hellodhlyn/telegrambot-py.svg?style=flat-square)](https://travis-ci.org/hellodhlyn/telegrambot-py)
 [![Coverage](https://img.shields.io/codecov/c/gh/hellodhlyn/telegrambot-py.svg?style=flat-square)](https://codecov.io/gh/hellodhlyn/telegrambot-py)
+[![PyPI](https://img.shields.io/pypi/v/telegrambot-py.svg?style=flat-square)](https://pypi.org/project/telegrambot-py)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/telegrambot-py.svg?style=flat-square)](https://pypi.org/project/telegrambot-py)
 [![License](https://img.shields.io/github/license/hellodhlyn/telegrambot-py.svg?style=flat-square)](https://github.com/hellodhlyn/telegrambot-py/blob/master/LICENSE)
 
 # telegrambot-py
@@ -41,4 +43,10 @@ pipenv install --dev
 ```sh
 pipenv run lint
 pipenv run test
+```
+
+### Deployment
+
+```sh
+pipenv run package
 ```
