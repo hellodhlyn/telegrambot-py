@@ -19,9 +19,9 @@ from telegrambot import Bot
 
 bot = Bot('your_bot_token')
 
-@bot.command('/ping')
-def ping(ctx):
-    return 'pong'
+@bot.command('/ping {name}')
+def ping(ctx, name):
+    return "Hello, {}".format(name)
 
 bot.start()
 ```

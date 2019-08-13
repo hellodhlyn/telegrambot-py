@@ -41,7 +41,7 @@ class TestBot(unittest.TestCase):
         self._error_handler = error_handler
 
     def test_command(self):
-        self.assertIn('/ping', self.bot._commands.keys())
+        self.assertEqual(len(self.bot._commands), 2)
 
     def test_poll(self):
         self.bot._execute_command = Mock()

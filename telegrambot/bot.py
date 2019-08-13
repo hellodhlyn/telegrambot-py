@@ -1,6 +1,7 @@
 from telegram import Bot as BotInterface
 from telegram.utils.request import Request
 
+from telegrambot.command import Command
 from telegrambot.context import Context
 
 _POLLING_TIMEOUT = 30
@@ -10,22 +11,22 @@ class Bot:
     def __init__(self, token: str):
         self.token = token
 
-        self._commands = {}
+        self._commands = []
         self._update_offset = 0
         self._error_handler = None
 
-    def command(self, command):
+    def command(self, template):
         """
         A decorator to register a command.
         Usage example:
 
-            @bot.command('/ping')
-            def ping(ctx):
-                return 'pong'
+            @bot.command('/ping {name}')
+            def ping(ctx, name):
+                return "Hello, {}!".format(name)
         """
 
         def decorator(f):
-            self._commands[command] = f
+            self._commands.append(Command(template, f))
             return f
 
         return decorator
@@ -74,15 +75,15 @@ class Bot:
                 self._error_handler(e)
 
     def _execute_command(self, message):
-        texts = message.text.split(' ')
-        context = Context(texts[0], texts[1:], message)
+        for c in self._commands:
+            if c.matched(message.text):
+                command = c
+                break
+        else:
+            raise RuntimeError("Invalid request: {}".format(message.text))
 
-        command = context.command
-        func = self._commands.get(command, None)
-        if not func:
-            raise RuntimeError("No such command: {}".format(command))
-
-        res = func(context)
+        context = Context(message)
+        res = command.call(message.text, context)
         self._interface.send_message(
             chat_id=context.message.chat.id,
             text=res,
