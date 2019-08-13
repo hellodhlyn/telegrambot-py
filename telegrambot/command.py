@@ -34,7 +34,7 @@ class Command:
         param_tpls = re.findall(cls.REGEX_PARAM_TEMPLATE, template)
         for tpl in param_tpls:
             param_name = re.search(cls.REGEX_PARAM_NAME, tpl).group(0)
-            param_regex = rf"(?P<{param_name}>.+)"
+            param_regex = r"(?P<{}>.+)".format(param_name)
             regex = regex.replace(tpl, param_regex)
 
         return "^{}$".format(regex)
