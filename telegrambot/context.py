@@ -2,7 +2,5 @@ from telegram import Message
 
 
 class Context:
-    def __init__(self, command: str, subcommands: list, message: Message):
-        self.command = command
-        self.subcommands = subcommands
+    def __init__(self, message: Message):
         self.message = message
