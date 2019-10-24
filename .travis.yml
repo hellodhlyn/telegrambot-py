@@ -25,6 +25,7 @@ jobs:
         - pip install codecov
         - codecov
     - stage: deploy
+      if: branch = master AND type != pull_request
       python: "3.7"
       deploy:
         provider: pypi
