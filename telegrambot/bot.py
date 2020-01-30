@@ -3,6 +3,7 @@ from telegram.utils.request import Request
 
 from telegrambot.command import Command
 from telegrambot.context import Context
+from telegrambot.message import TextMessage
 
 _POLLING_TIMEOUT = 30
 
@@ -83,8 +84,8 @@ class Bot:
             raise RuntimeError("Invalid request: {}".format(message.text))
 
         context = Context(message)
-        res = command.call(message.text, context)
-        self._interface.send_message(
-            chat_id=context.message.chat.id,
-            text=res,
-        )
+        reply_msg = command.call(message.text, context)
+        if type(reply_msg) == str:
+            reply_msg = TextMessage(reply_msg)
+
+        reply_msg.send(self._interface, context.message.chat.id)
